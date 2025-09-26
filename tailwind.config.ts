@@ -9,6 +9,12 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'grid-pattern': "radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0)",
+      },
+      backgroundSize: {
+        'grid-pattern': "2rem 2rem",
+      },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['"Space Grotesk"', 'sans-serif'],

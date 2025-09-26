@@ -16,10 +16,11 @@ const Logo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
         className={cn('size-6', className)}
         {...props}
       >
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        <path d="M16.5 9.4l-9 4.5" />
-        <path d="M18.5 14.4l-5 2.5" />
-        <path d="M5.5 14.4l5 2.5" />
+        <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" />
+        <path d="M2 7l10 5" />
+        <path d="M12 12v10" />
+        <path d="M22 7l-10 5" />
+        <path d="M7.5 9.5L12 12l4.5-2.5" />
       </svg>
     );
   }

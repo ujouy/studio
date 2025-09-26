@@ -1,30 +1,22 @@
 'use client';
 
-import { useEffect, useRef, useActionState } from 'react';
+import { useEffect, useRef, useActionState, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { handleGenerate, handleIterate } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import {
-  SidebarProvider,
-  Sidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarInset,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-} from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Loader2, Sparkles, Wand2 } from 'lucide-react';
 import ProductPreview from './product-preview';
 import Logo from './logo';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
-function SubmitButton({ children, icon: Icon }: { children: React.ReactNode; icon: React.ElementType }) {
+function SubmitButton({ children, icon: Icon, formAction }: { children: React.ReactNode; icon: React.ElementType; formAction: (formData: FormData) => void; }) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full">
+    <Button type="submit" disabled={pending} className="w-full" formAction={formAction}>
       {pending ? (
         <Loader2 className="animate-spin" />
       ) : (
@@ -35,17 +27,35 @@ function SubmitButton({ children, icon: Icon }: { children: React.ReactNode; ico
   );
 }
 
+const styleModifiers = [
+  'Vintage Comic',
+  'Minimalist Line Art',
+  'Photorealistic',
+  'Chrome Effect',
+  'Glitch',
+  'Bauhaus',
+  'Psychedelic',
+  'Brutalist',
+];
+
 export default function GraphicGenerator() {
   const { toast } = useToast();
+  const [prompt, setPrompt] = useState('');
+
+  const handleModifierClick = (modifier: string) => {
+    setPrompt(prev => prev ? `${prev}, ${modifier}` : modifier);
+  };
+
 
   const initialState = { image: null, error: null, prompt: null };
-  const [generateState, generateAction] = useActionState(handleGenerate, initialState);
-  const [iterateState, iterateAction] = useActionState(handleIterate, initialState);
+  const [generateState, generateAction, isGenerating] = useActionState(handleGenerate, initialState);
+  const [iterateState, iterateAction, isIterating] = useActionState(handleIterate, initialState);
 
   const formRef = useRef<HTMLFormElement>(null);
   const iterationFormRef = useRef<HTMLFormElement>(null);
 
   const currentState = generateState.image || iterateState.image ? iterateState : generateState;
+  const isLoading = isGenerating || isIterating;
 
   useEffect(() => {
     if (generateState.error) {
@@ -58,10 +68,6 @@ export default function GraphicGenerator() {
       toast({ variant: 'destructive', title: 'Iteration Failed', description: iterateState.error });
     }
   }, [iterateState.error, toast]);
-  
-  const { pending: isGenerating } = useFormStatus();
-  const { pending: isIterating } = useFormStatus();
-  const isLoading = isGenerating || isIterating;
 
   return (
     <div className="grid h-full w-full flex-1 grid-cols-1 lg:grid-cols-[380px_1fr]">
@@ -72,39 +78,56 @@ export default function GraphicGenerator() {
             </div>
 
             <div className="flex flex-col gap-6 overflow-y-auto">
-              <form action={generateAction} ref={formRef} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="prompt">1. Describe your design</Label>
-                  <Textarea
-                    id="prompt"
-                    name="prompt"
-                    placeholder="e.g., A minimalist skull wearing a crown, vintage comic book style"
-                    rows={4}
-                    required
-                    className="h-24"
-                  />
-                </div>
-                <SubmitButton icon={Sparkles}>Generate</SubmitButton>
-              </form>
+                <form ref={formRef} className="space-y-4">
+                  <div className="space-y-3">
+                    <Label htmlFor="prompt" className="text-lg font-semibold font-headline tracking-tight">1. Describe your design</Label>
+                    <Textarea
+                      id="prompt"
+                      name="prompt"
+                      placeholder="e.g., A chrome wolf howling at a glitch art moon"
+                      rows={4}
+                      required
+                      className="h-24 resize-none border-0 border-b-2 rounded-none focus-visible:ring-0 px-0"
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">Style Modifiers</Label>
+                    <div className="flex flex-wrap gap-2">
+                        {styleModifiers.map(modifier => (
+                            <Badge 
+                                key={modifier} 
+                                variant="secondary" 
+                                className="cursor-pointer hover:bg-primary/20"
+                                onClick={() => handleModifierClick(modifier)}
+                            >
+                                {modifier}
+                            </Badge>
+                        ))}
+                    </div>
+                  </div>
+                  <SubmitButton icon={Sparkles} formAction={generateAction}>Create</SubmitButton>
+                </form>
 
               {currentState.image && (
                 <div className="space-y-4 border-t pt-6">
-                  <form action={iterateAction} ref={iterationFormRef} className="space-y-4">
-                    <input type="hidden" name="previousImage" value={currentState.image ?? ''} />
-                    <input type="hidden" name="prompt" value={currentState.prompt ?? ''} />
-                    <div className="space-y-2">
-                      <Label htmlFor="feedback">2. Refine your design</Label>
-                      <Textarea
-                        id="feedback"
-                        name="feedback"
-                        placeholder="e.g., Make the crown bigger, add more vibrant colors"
-                        rows={4}
-                        required
-                        className="h-24"
-                      />
-                    </div>
-                    <SubmitButton icon={Wand2}>Refine</SubmitButton>
-                  </form>
+                    <form ref={iterationFormRef} className="space-y-4">
+                      <input type="hidden" name="previousImage" value={currentState.image ?? ''} />
+                      <input type="hidden" name="prompt" value={currentState.prompt ?? ''} />
+                      <div className="space-y-2">
+                        <Label htmlFor="feedback" className="text-lg font-semibold font-headline tracking-tight">2. Refine your design</Label>
+                        <Textarea
+                          id="feedback"
+                          name="feedback"
+                          placeholder="e.g., Make the wolf larger, add neon blue accents"
+                          rows={4}
+                          required
+                          className="h-24 resize-none"
+                        />
+                      </div>
+                      <SubmitButton icon={Wand2} formAction={iterateAction}>Refine</SubmitButton>
+                    </form>
                 </div>
               )}
             </div>

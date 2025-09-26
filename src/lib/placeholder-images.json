@@ -2,21 +2,21 @@
   "placeholderImages": [
     {
       "id": "tshirt-mockup",
-      "description": "A plain black t-shirt mockup.",
-      "imageUrl": "https://images.unsplash.com/photo-1622445275463-afa2ab738c34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0c2hpcnQlMjBtb2NrdXB8ZW58MHx8fHwxNzU4NzkxNzg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "tshirt mockup"
+      "description": "A premium, stylish t-shirt mockup with dramatic lighting.",
+      "imageUrl": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb2RlbCUyMHRzaGlydHxlbnwwfHx8fDE3NTg5MzY0MDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tshirt mockup model"
     },
     {
       "id": "hoodie-mockup",
-      "description": "A plain black hoodie mockup.",
-      "imageUrl": "https://images.unsplash.com/photo-1610582144787-eda2e6f293b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxob29kaWUlMjBtb2NrdXB8ZW58MHx8fHwxNzU4ODIwNzk4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hoodie mockup"
+      "description": "A stylish hoodie mockup on a faceless model in an urban setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1556108924-d2e33f0f7ade?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxob29kaWUlMjBtb2RlbHxlbnwwfHx8fDE3NTg5MzY1MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hoodie mockup model"
     },
     {
       "id": "hat-mockup",
-      "description": "A plain black hat mockup.",
-      "imageUrl": "https://images.unsplash.com/photo-1618354691792-d1d42acfd860?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxoYXQlMjBtb2NrdXB8ZW58MHx8fHwxNzU4ODU3MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hat mockup"
+      "description": "A high-quality flat lay of a black baseball cap on a textured surface.",
+      "imageUrl": "https://images.unsplash.com/photo-1534215754734-18e3d14e10e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxiYXNlYmFsbCUyMGNhcCUyMGZsYXQlMjBsYXl8ZW58MHx8fHwxNzU4OTM2NTgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hat mockup flat"
     },
     {
       "id": "saved-design-1",
