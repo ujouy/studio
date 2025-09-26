@@ -1,29 +1,63 @@
+// src/lib/product-types.ts
 
-export type ProductId = 'tshirt' | 'hoodie' | 'hat';
-export type ProductColor = 'Black' | 'White' | 'Gray';
+// This is the definitive data structure using reliable local paths.
+export const products = {
+  tshirt: {
+    name: 'Premium Tee',
+    price: 75.00,
+    variants: {
+      black: {
+        name: 'Black',
+        color: '#000000',
+        mockupUrl: '/mockups/tshirt-black.jpg', // Correct local path
+        printArea: { top: '25%', left: '30%', width: '40%', height: '50%' },
+      },
+      white: {
+        name: 'White',
+        color: '#FFFFFF',
+        mockupUrl: '/mockups/tshirt-white.jpg', // Correct local path
+        printArea: { top: '25%', left: '30%', width: '40%', height: '50%' },
+      },
+    },
+  },
+  hoodie: {
+    name: 'Heavyweight Hoodie',
+    price: 120.00,
+    variants: {
+      black: {
+        name: 'Black',
+        color: '#000000',
+        mockupUrl: '/mockups/hoodie-black.jpg', // Correct local path
+        printArea: { top: '25%', left: '30%', width: '40%', height: '45%' },
+      },
+      white: {
+        name: 'White',
+        color: '#FFFFFF',
+        mockupUrl: '/mockups/hoodie-white.jpg', // Correct local path
+        printArea: { top: '25%', left: '30%', width: '40%', height: '45%' },
+      },
+    },
+  },
+  hat: {
+    name: 'Classic Hat',
+    price: 45.00,
+    variants: {
+      black: {
+        name: 'Black',
+        color: '#000000',
+        mockupUrl: '/mockups/hat-black.jpg', // Correct local path
+        printArea: { top: '30%', left: '30%', width: '40%', height: '30%' },
+      },
+      white: {
+        name: 'White',
+        color: '#FFFFFF',
+        mockupUrl: '/mockups/hat-white.jpg', // Correct local path
+        printArea: { top: '30%', left: '30%', width: '40%', height: '30%' },
+      },
+    },
+  },
+};
 
-export const productTypes = [
-  { 
-    id: 'tshirt' as ProductId, name: 'T-Shirt', price: 75,
-    colors: [
-      { name: 'Black' as ProductColor, color: '#000000', mockupUrl: 'https://picsum.photos/seed/tshirt-black/800/800', printArea: { top: '25%', left: '32.5%', width: '35%', height: '40%' } },
-      { name: 'White' as ProductColor, color: '#FFFFFF', mockupUrl: 'https://picsum.photos/seed/tshirt-white/800/800', printArea: { top: '25%', left: '32.5%', width: '35%', height: '40%' } },
-      { name: 'Gray' as ProductColor, color: '#808080', mockupUrl: 'https://picsum.photos/seed/tshirt-gray/800/800', printArea: { top: '25%', left: '32.5%', width: '35%', height: '40%' } },
-    ],
-  },
-  { 
-    id: 'hoodie' as ProductId, name: 'Hoodie', price: 120,
-    colors: [
-      { name: 'Black' as ProductColor, color: '#000000', mockupUrl: 'https://picsum.photos/seed/hoodie-black/800/800', printArea: { top: '28%', left: '35%', width: '30%', height: '35%' } },
-      { name: 'White' as ProductColor, color: '#FFFFFF', mockupUrl: 'https://picsum.photos/seed/hoodie-white/800/800', printArea: { top: '28%', left: '35%', width: '30%', height: '35%' } },
-      { name: 'Gray' as ProductColor, color: '#808080', mockupUrl: 'https://picsum.photos/seed/hoodie-gray/800/800', printArea: { top: '28%', left: '35%', width: '30%', height: '35%' } },
-    ],
-  },
-  { 
-    id: 'hat' as ProductId, name: 'Hat', price: 45,
-    colors: [
-        { name: 'Black' as ProductColor, color: '#000000', mockupUrl: 'https://picsum.photos/seed/hat-black/800/800', printArea: { top: '35%', left: '30%', width: '40%', height: '25%' } },
-        { name: 'White' as ProductColor, color: '#FFFFFF', mockupUrl: 'https://picsum.photos/seed/hat-white/800/800', printArea: { top: '35%', left: '30%', width: '40%', height: '25%' } },
-    ],
-  },
-];
+export type ProductId = keyof typeof products;
+export type AnyColor = typeof products[ProductId]['variants'][keyof typeof products[ProductId]['variants']];
+export type ProductColor = AnyColor['name'];

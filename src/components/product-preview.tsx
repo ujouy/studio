@@ -1,30 +1,30 @@
 'use client';
 
 import Image from 'next/image';
-import { productTypes, ProductId, ProductColor } from '@/lib/product-types';
+import { products, ProductId, ProductColor } from '@/lib/product-types';
 import { Loader2, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ProductPreviewProps {
-  imageUrl: string | null;
+  designUrl: string | null;
   isLoading: boolean;
-  activeProduct: ProductId;
-  activeColor: ProductColor;
+  selectedProduct: ProductId;
+  selectedColor: ProductColor;
   scale: number;
   offset: { x: number; y: number };
 }
 
 export default function ProductPreview({ 
-  imageUrl, 
+  designUrl, 
   isLoading, 
-  activeProduct,
-  activeColor,
+  selectedProduct,
+  selectedColor,
   scale,
   offset
 }: ProductPreviewProps) {
   
-  const productInfo = productTypes.find(p => p.id === activeProduct);
-  const variant = productInfo?.colors.find(c => c.name === activeColor);
+  const productInfo = products[selectedProduct];
+  const variant = Object.values(productInfo.variants).find(c => c.name === selectedColor);
 
   if (!productInfo || !variant) {
     // Fallback or error state
@@ -65,7 +65,7 @@ export default function ProductPreview({
               </div>
           )}
 
-          {imageUrl && !isLoading ? (
+          {designUrl && !isLoading ? (
             <div 
               className={cn("w-full h-full transition-opacity duration-500", isLoading ? 'opacity-50' : 'opacity-100')}
               style={{
@@ -73,7 +73,7 @@ export default function ProductPreview({
               }}
             >
               <Image
-                src={imageUrl}
+                src={designUrl}
                 alt="Generated AI Graphic"
                 fill
                 className="object-contain"

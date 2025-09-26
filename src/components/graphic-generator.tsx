@@ -13,7 +13,7 @@ import Logo from './logo';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { productTypes, ProductId, ProductColor } from '@/lib/product-types';
+import { products, ProductId, ProductColor } from '@/lib/product-types';
 import { IconTshirt, IconHoodie, IconCap } from './product-icons';
 
 function SubmitButton({ children, icon: Icon, formAction }: { children: React.ReactNode; icon: React.ElementType; formAction: (formData: FormData) => void; }) {
@@ -97,10 +97,9 @@ export default function GraphicGenerator() {
 
   const handleProductChange = (productId: ProductId) => {
     setActiveProduct(productId);
-    const product = productTypes.find(p => p.id === productId);
-    if (product && product.colors.length > 0) {
-      setActiveColor(product.colors[0].name);
-    }
+    const product = products[productId];
+    const firstColor = Object.values(product.variants)[0].name;
+    setActiveColor(firstColor);
   };
 
   const handleSave = () => {
@@ -109,6 +108,8 @@ export default function GraphicGenerator() {
       description: "Your masterpiece has been saved to your dashboard.",
     });
   };
+
+  const currentProductInfo = products[activeProduct];
 
   return (
     <div className="grid h-full w-full flex-1 grid-cols-1 lg:grid-cols-[380px_1fr]">
@@ -214,15 +215,20 @@ export default function GraphicGenerator() {
           </div>
           
           <div className="mt-auto border-t p-4 space-y-4">
-              <h2 className="text-lg font-semibold font-headline tracking-tight">2. Preview &amp; Customize</h2>
+              <div className='flex justify-between items-baseline'>
+                <h2 className="text-lg font-semibold font-headline tracking-tight">2. Preview &amp; Customize</h2>
+                <p className='font-bold text-lg'>${currentProductInfo.price.toFixed(2)}</p>
+              </div>
                <div className="grid grid-cols-3 gap-2">
-                {productTypes.map((product) => {
-                  const Icon = productIcons[product.id];
+                {Object.keys(products).map((key) => {
+                  const productId = key as ProductId;
+                  const product = products[productId];
+                  const Icon = productIcons[productId];
                   return (
                     <Button 
-                      key={product.id} 
-                      variant={activeProduct === product.id ? 'default': 'outline'}
-                      onClick={() => handleProductChange(product.id)}
+                      key={product.name} 
+                      variant={activeProduct === productId ? 'default': 'outline'}
+                      onClick={() => handleProductChange(productId)}
                       className="flex-col h-auto"
                     >
                       <Icon className="w-8 h-8 mb-1" />
@@ -232,12 +238,12 @@ export default function GraphicGenerator() {
                 })}
               </div>
               <div className="flex items-center gap-3 justify-center pt-2">
-                  {(productTypes.find(p => p.id === activeProduct)?.colors || []).map(color => (
-                      <button key={color.name} 
-                          onClick={() => setActiveColor(color.name)}
-                          className={cn("w-8 h-8 rounded-full border-2 transition-transform", activeColor === color.name ? 'border-primary scale-110' : 'border-transparent')}
-                          style={{backgroundColor: color.color}}
-                          aria-label={`Select ${color.name} color`}
+                  {Object.values(currentProductInfo.variants).map(variant => (
+                      <button key={variant.name} 
+                          onClick={() => setActiveColor(variant.name as ProductColor)}
+                          className={cn("w-8 h-8 rounded-full border-2 transition-transform", activeColor === variant.name ? 'border-primary scale-110' : 'border-transparent')}
+                          style={{backgroundColor: variant.color}}
+                          aria-label={`Select ${variant.name} color`}
                       />
                   ))}
               </div>
@@ -258,10 +264,10 @@ export default function GraphicGenerator() {
 
       <div className="flex flex-col bg-background">
           <ProductPreview 
-            imageUrl={currentState.image} 
+            designUrl={currentState.image} 
             isLoading={isLoading} 
-            activeProduct={activeProduct}
-            activeColor={activeColor}
+            selectedProduct={activeProduct}
+            selectedColor={activeColor}
             scale={scale}
             offset={offset}
           />

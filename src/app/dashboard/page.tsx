@@ -7,44 +7,43 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
-import { productTypes } from '@/lib/product-types';
+import { products } from '@/lib/product-types';
 
-// Dummy data for saved designs, now using productTypes for image consistency
 const savedDesigns = [
     {
       id: 'saved-design-1',
       description: 'An abstract graphic with vibrant colors.',
-      imageUrl: productTypes.find(p => p.id === 'tshirt')?.colors.find(c => c.name === 'White')?.mockupUrl || '',
+      mockupUrl: products.tshirt.variants.white.mockupUrl,
       imageHint: 'vibrant abstract',
     },
     {
       id: 'saved-design-2',
       description: 'A graffiti-style street art design.',
-      imageUrl: productTypes.find(p => p.id === 'hoodie')?.colors.find(c => c.name === 'White')?.mockupUrl || '',
+      mockupUrl: products.hoodie.variants.white.mockupUrl,
       imageHint: 'graffiti art',
     },
     {
       id: 'saved-design-3',
       description: 'A detailed skull design with intricate patterns.',
-      imageUrl: productTypes.find(p => p.id === 'tshirt')?.colors.find(c => c.name === 'Black')?.mockupUrl || '',
+      mockupUrl: products.tshirt.variants.black.mockupUrl,
       imageHint: 'intricate skull',
     },
     {
       id: 'saved-design-4',
       description: 'A futuristic cyberpunk art piece.',
-      imageUrl: productTypes.find(p => p.id === 'hoodie')?.colors.find(c => c.name === 'Black')?.mockupUrl || '',
+      mockupUrl: products.hoodie.variants.black.mockupUrl,
       imageHint: 'futuristic cyberpunk',
     },
     {
       id: 'saved-design-5',
       description: 'A surreal fantasy landscape.',
-      imageUrl: productTypes.find(p => p.id === 'hat')?.colors.find(c => c.name === 'White')?.mockupUrl || '',
+      mockupUrl: products.hat.variants.white.mockupUrl,
       imageHint: 'surreal landscape',
     },
     {
       id: 'saved-design-6',
       description: 'A classic Japanese wave illustration.',
-      imageUrl: productTypes.find(p => p.id === 'hat')?.colors.find(c => c.name === 'Black')?.mockupUrl || '',
+      mockupUrl: products.hat.variants.black.mockupUrl,
       imageHint: 'japanese wave',
     },
   ];
@@ -89,7 +88,7 @@ export default function DashboardPage() {
               <CardContent className="p-0">
                 <div className="aspect-square relative">
                   <Image
-                    src={design.imageUrl}
+                    src={design.mockupUrl}
                     alt={design.description}
                     fill
                     className="object-cover"
