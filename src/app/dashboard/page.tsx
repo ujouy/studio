@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect } from 'react';
@@ -12,37 +13,37 @@ const savedDesigns = [
     {
       "id": "saved-design-1",
       "description": "An abstract graphic with vibrant colors.",
-      "imageUrl": "https://images.unsplash.com/photo-1635169852185-37f90ac07189?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdyYXBoaWN8ZW58MHx8fHwxNzU4ODU3MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/mockups/gallery/abstract.png",
       "imageHint": "abstract graphic"
     },
     {
       "id": "saved-design-2",
       "description": "A graffiti-style street art design.",
-      "imageUrl": "https://images.unsplash.com/photo-1473225071450-1f1462d5aa92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzdHJlZXQlMjBhcnR8ZW58MHx8fHwxNzU4ODAyMTQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/mockups/gallery/street.png",
       "imageHint": "street art"
     },
     {
       "id": "saved-design-3",
       "description": "A detailed skull design with intricate patterns.",
-      "imageUrl": "https://images.unsplash.com/photo-1638836177891-d47f6cc7a336?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3VsbCUyMGRlc2lnbnxlbnwwfHx8fDE3NTg4NTczODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/mockups/gallery/skull.png",
       "imageHint": "skull design"
     },
     {
       "id": "saved-design-4",
       "description": "A futuristic cyberpunk art piece.",
-      "imageUrl": "https://images.unsplash.com/photo-1666757491046-9de31550c8456?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3liZXJwdW5rJTIwYXJ0fGVufDB8fHx8MTc1ODg1NzM4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/mockups/gallery/cyberpunk.png",
       "imageHint": "cyberpunk art"
     },
     {
       "id": "saved-design-5",
       "description": "A surreal fantasy landscape.",
-      "imageUrl": "https://images.unsplash.com/photo-1514539079130-25950c84af65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmYW50YXN5JTIwbGFuZHNjYXBlfGVufDB8fHx8MTc1ODc5OTMxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/mockups/gallery/fantasy.png",
       "imageHint": "fantasy landscape"
     },
     {
       "id": "saved-design-6",
       "description": "A classic Japanese wave illustration.",
-      "imageUrl": "https://images.unsplash.com/photo-1646346834551-886c1b0aa5c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxqYXBhbmVzZSUyMHdhdmV8ZW58MHx8fHwxNzU4ODU3MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/mockups/gallery/wave.png",
       "imageHint": "japanese wave"
     }
   ];
