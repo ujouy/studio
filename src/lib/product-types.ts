@@ -9,13 +9,13 @@ export const products = {
       black: {
         name: 'Black',
         color: '#000000',
-        mockupUrl: '/mockups/blackshirt.webp', // Correct local path
+        mockupUrl: '/images/mockups/blackshirt.webp', // Correct local path
         printArea: { top: '25%', left: '30%', width: '40%', height: '50%' },
       },
       white: {
         name: 'White',
         color: '#FFFFFF',
-        mockupUrl: '/mockups/whiteshirt.webp', // Correct local path
+        mockupUrl: '/images/mockups/whiteshirt.webp', // Correct local path
         printArea: { top: '25%', left: '30%', width: '40%', height: '50%' },
       },
     },
@@ -27,13 +27,13 @@ export const products = {
       black: {
         name: 'Black',
         color: '#000000',
-        mockupUrl: '/mockups/blackhoodie.webp', // Correct local path
+        mockupUrl: '/images/mockups/blackhoodie.webp', // Correct local path
         printArea: { top: '25%', left: '30%', width: '40%', height: '45%' },
       },
       white: {
         name: 'White',
         color: '#FFFFFF',
-        mockupUrl: '/mockups/whitehoodie.webp', // Correct local path
+        mockupUrl: '/images/mockups/whitehoodie.webp', // Correct local path
         printArea: { top: '25%', left: '30%', width: '40%', height: '45%' },
       },
     },
@@ -45,13 +45,13 @@ export const products = {
       black: {
         name: 'Black',
         color: '#000000',
-        mockupUrl: '/mockups/blackcap.webp', // Correct local path
+        mockupUrl: '/images/mockups/blackcap.webp', // Correct local path
         printArea: { top: '30%', left: '30%', width: '40%', height: '30%' },
       },
       white: {
         name: 'White',
         color: '#FFFFFF',
-        mockupUrl: '/mockups/whitecap.webp', // Correct local path
+        mockupUrl: '/images/mockups/whitecap.webp', // Correct local path
         printArea: { top: '30%', left: '30%', width: '40%', height: '30%' },
       },
     },
