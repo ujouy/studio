@@ -7,12 +7,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Loader2, Sparkles, Wand2 } from 'lucide-react';
+import { Loader2, Sparkles, Wand2, Shirt, Save, Plus, Minus, ArrowUp, ArrowDown } from 'lucide-react';
 import ProductPreview from './product-preview';
 import Logo from './logo';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { productTypes, ProductId, ProductColor } from '@/lib/product-types';
+import { IconTshirt, IconHoodie, IconCap } from './product-icons';
 
 function SubmitButton({ children, icon: Icon, formAction }: { children: React.ReactNode; icon: React.ElementType; formAction: (formData: FormData) => void; }) {
   const { pending } = useFormStatus();
@@ -39,12 +41,25 @@ const styleModifiers = [
     { name: 'Brutalist', description: 'Raw, blocky, and monolithic.' },
 ];
 
+const productIcons: Record<ProductId, React.ElementType> = {
+  tshirt: IconTshirt,
+  hoodie: IconHoodie,
+  hat: IconCap,
+};
+
+
 export default function GraphicGenerator() {
   const { toast } = useToast();
   const [prompt, setPrompt] = useState('');
   const [selectedModifiers, setSelectedModifiers] = useState<string[]>([]);
   const [showNegativePrompt, setShowNegativePrompt] = useState(false);
   
+  const [activeProduct, setActiveProduct] = useState<ProductId>('tshirt');
+  const [activeColor, setActiveColor] = useState<ProductColor>('Black');
+
+  const [scale, setScale] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
   const handleModifierClick = (modifier: string) => {
     setSelectedModifiers(prev =>
       prev.includes(modifier)
@@ -63,6 +78,7 @@ export default function GraphicGenerator() {
 
   const formRef = useRef<HTMLFormElement>(null);
   const iterationFormRef = useRef<HTMLFormElement>(null);
+  const negativePromptRef = useRef<HTMLTextAreaElement>(null);
 
   const currentState = generateState.image || iterateState.image ? iterateState : generateState;
   const isLoading = isGenerating || isIterating;
@@ -79,10 +95,26 @@ export default function GraphicGenerator() {
     }
   }, [iterateState.error, toast]);
 
+  const handleProductChange = (productId: ProductId) => {
+    setActiveProduct(productId);
+    const product = productTypes.find(p => p.id === productId);
+    if (product && product.colors.length > 0) {
+      setActiveColor(product.colors[0].name);
+    }
+  };
+
+  const handleSave = () => {
+    toast({
+      title: "Design Saved!",
+      description: "Your masterpiece has been saved to your dashboard.",
+    });
+  };
+
   return (
     <div className="grid h-full w-full flex-1 grid-cols-1 lg:grid-cols-[380px_1fr]">
       <TooltipProvider>
-        <div className="flex flex-col border-r bg-sidebar p-4">
+        <div className="flex flex-col border-r bg-sidebar">
+          <div className="p-4">
             <div className="mb-6 flex items-center gap-2">
               <Logo className="size-8 text-primary" />
               <h1 className="font-headline text-2xl font-semibold">Streetwear AI</h1>
@@ -91,6 +123,9 @@ export default function GraphicGenerator() {
             <div className="flex flex-col gap-6 overflow-y-auto">
                 <form ref={formRef} action={(formData) => {
                     formData.set('prompt', getFullPrompt());
+                    if (negativePromptRef.current) {
+                      formData.set('negativePrompt', negativePromptRef.current.value);
+                    }
                     generateAction(formData);
                 }} className="space-y-4">
                   <div className="space-y-3">
@@ -115,6 +150,7 @@ export default function GraphicGenerator() {
                        <Textarea
                           id="negativePrompt"
                           name="negativePrompt"
+                          ref={negativePromptRef}
                           placeholder="e.g., text, blurry, extra limbs"
                           rows={2}
                           className="resize-none"
@@ -144,6 +180,9 @@ export default function GraphicGenerator() {
                   </div>
                   <SubmitButton icon={Sparkles} formAction={(formData) => {
                     formData.set('prompt', getFullPrompt());
+                     if (negativePromptRef.current) {
+                        formData.set('negativePrompt', negativePromptRef.current.value);
+                     }
                     generateAction(formData);
                 }}>Create</SubmitButton>
                 </form>
@@ -153,11 +192,11 @@ export default function GraphicGenerator() {
                     <form ref={iterationFormRef} className="space-y-4" action={iterateAction}>
                       <input type="hidden" name="previousImage" value={currentState.image ?? ''} />
                       <input type="hidden" name="prompt" value={currentState.prompt ?? ''} />
-                       {showNegativePrompt && (
-                        <input type="hidden" name="negativePrompt" value={formRef.current?.negativePrompt.value ?? ''} />
+                       {showNegativePrompt && negativePromptRef.current && (
+                        <input type="hidden" name="negativePrompt" value={negativePromptRef.current.value} />
                       )}
                       <div className="space-y-2">
-                        <Label htmlFor="feedback" className="text-lg font-semibold font-headline tracking-tight">2. Refine your design</Label>
+                        <Label htmlFor="feedback" className="text-lg font-semibold font-headline tracking-tight">Refine your design</Label>
                         <Textarea
                           id="feedback"
                           name="feedback"
@@ -172,12 +211,61 @@ export default function GraphicGenerator() {
                 </div>
               )}
             </div>
+          </div>
+          
+          <div className="mt-auto border-t p-4 space-y-4">
+              <h2 className="text-lg font-semibold font-headline tracking-tight">2. Preview &amp; Customize</h2>
+               <div className="grid grid-cols-3 gap-2">
+                {productTypes.map((product) => {
+                  const Icon = productIcons[product.id];
+                  return (
+                    <Button 
+                      key={product.id} 
+                      variant={activeProduct === product.id ? 'default': 'outline'}
+                      onClick={() => handleProductChange(product.id)}
+                      className="flex-col h-auto"
+                    >
+                      <Icon className="w-8 h-8 mb-1" />
+                      <span className="text-xs">{product.name}</span>
+                    </Button>
+                  );
+                })}
+              </div>
+              <div className="flex items-center gap-3 justify-center pt-2">
+                  {(productTypes.find(p => p.id === activeProduct)?.colors || []).map(color => (
+                      <button key={color.name} 
+                          onClick={() => setActiveColor(color.name)}
+                          className={cn("w-8 h-8 rounded-full border-2 transition-transform", activeColor === color.name ? 'border-primary scale-110' : 'border-transparent')}
+                          style={{backgroundColor: color.color}}
+                          aria-label={`Select ${color.name} color`}
+                      />
+                  ))}
+              </div>
+               {currentState.image && !isLoading && (
+              <div className="bg-card p-2 rounded-lg shadow-lg flex gap-2 justify-center">
+                <Button variant="outline" size="icon" onClick={() => setScale(s => s + 0.1)}><Plus /></Button>
+                <Button variant="outline" size="icon" onClick={() => setScale(s => Math.max(0.1, s - 0.1))}><Minus /></Button>
+                <Button variant="outline" size="icon" onClick={() => setOffset(o => ({ ...o, y: o.y - 10 }))}><ArrowUp /></Button>
+                <Button variant="outline" size="icon" onClick={() => setOffset(o => ({ ...o, y: o.y + 10 }))}><ArrowDown /></Button>
+                <Button onClick={handleSave} size="icon">
+                  <Save />
+                </Button>
+              </div>
+            )}
+            </div>
         </div>
       </TooltipProvider>
 
-        <div className="flex flex-col bg-background">
-            <ProductPreview imageUrl={currentState.image} isLoading={isLoading} />
-        </div>
+      <div className="flex flex-col bg-background">
+          <ProductPreview 
+            imageUrl={currentState.image} 
+            isLoading={isLoading} 
+            activeProduct={activeProduct}
+            activeColor={activeColor}
+            scale={scale}
+            offset={offset}
+          />
+      </div>
     </div>
   );
 }

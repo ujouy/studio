@@ -1,10 +1,2 @@
-import data from './placeholder-images.json';
-
-export type ImagePlaceholder = {
-  id: string;
-  description: string;
-  imageUrl: string;
-  imageHint: string;
-};
-
-export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
+// This file is obsolete and can be removed. Product data is now in product-types.ts
+export {};
