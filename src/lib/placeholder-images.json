@@ -1,3 +1,58 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "tshirt-mockup",
+      "description": "A plain black t-shirt mockup.",
+      "imageUrl": "https://images.unsplash.com/photo-1622445275463-afa2ab738c34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0c2hpcnQlMjBtb2NrdXB8ZW58MHx8fHwxNzU4NzkxNzg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tshirt mockup"
+    },
+    {
+      "id": "hoodie-mockup",
+      "description": "A plain black hoodie mockup.",
+      "imageUrl": "https://images.unsplash.com/photo-1610582144787-eda2e6f293b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxob29kaWUlMjBtb2NrdXB8ZW58MHx8fHwxNzU4ODIwNzk4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hoodie mockup"
+    },
+    {
+      "id": "hat-mockup",
+      "description": "A plain black hat mockup.",
+      "imageUrl": "https://images.unsplash.com/photo-1618354691792-d1d42acfd860?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxoYXQlMjBtb2NrdXB8ZW58MHx8fHwxNzU4ODU3MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hat mockup"
+    },
+    {
+      "id": "saved-design-1",
+      "description": "An abstract graphic with vibrant colors.",
+      "imageUrl": "https://images.unsplash.com/photo-1635169852185-37f90ac07189?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdyYXBoaWN8ZW58MHx8fHwxNzU4ODU3MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract graphic"
+    },
+    {
+      "id": "saved-design-2",
+      "description": "A graffiti-style street art design.",
+      "imageUrl": "https://images.unsplash.com/photo-1473225071450-1f1462d5aa92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzdHJlZXQlMjBhcnR8ZW58MHx8fHwxNzU4ODAyMTQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "street art"
+    },
+    {
+      "id": "saved-design-3",
+      "description": "A detailed skull design with intricate patterns.",
+      "imageUrl": "https://images.unsplash.com/photo-1638836177891-d47f6cc7a336?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3VsbCUyMGRlc2lnbnxlbnwwfHx8fDE3NTg4NTczODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "skull design"
+    },
+    {
+      "id": "saved-design-4",
+      "description": "A futuristic cyberpunk art piece.",
+      "imageUrl": "https://images.unsplash.com/photo-1666757491046-9de315501356?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3liZXJwdW5rJTIwYXJ0fGVufDB8fHx8MTc1ODg1NzM4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cyberpunk art"
+    },
+    {
+      "id": "saved-design-5",
+      "description": "A surreal fantasy landscape.",
+      "imageUrl": "https://images.unsplash.com/photo-1514539079130-25950c84af65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmYW50YXN5JTIwbGFuZHNjYXBlfGVufDB8fHx8MTc1ODc5OTMxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy landscape"
+    },
+    {
+      "id": "saved-design-6",
+      "description": "A classic Japanese wave illustration.",
+      "imageUrl": "https://images.unsplash.com/photo-1646346834551-886c1b0aa5c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxqYXBhbmVzZSUyMHdhdmV8ZW58MHx8fHwxNzU4ODU3MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "japanese wave"
+    }
+  ]
 }
