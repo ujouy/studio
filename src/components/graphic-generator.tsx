@@ -43,6 +43,7 @@ export default function GraphicGenerator() {
   const { toast } = useToast();
   const [prompt, setPrompt] = useState('');
   const [selectedModifiers, setSelectedModifiers] = useState<string[]>([]);
+  const [showNegativePrompt, setShowNegativePrompt] = useState(false);
   
   const handleModifierClick = (modifier: string) => {
     setSelectedModifiers(prev =>
@@ -106,6 +107,20 @@ export default function GraphicGenerator() {
                     />
                      <input type="hidden" name="prompt" value={getFullPrompt()} />
                   </div>
+                   <div className="space-y-3">
+                    <button type="button" onClick={() => setShowNegativePrompt(!showNegativePrompt)} className="text-sm text-muted-foreground hover:text-foreground">
+                      + Add negative prompt
+                    </button>
+                    {showNegativePrompt && (
+                       <Textarea
+                          id="negativePrompt"
+                          name="negativePrompt"
+                          placeholder="e.g., text, blurry, extra limbs"
+                          rows={2}
+                          className="resize-none"
+                        />
+                    )}
+                  </div>
                   <div className="space-y-3">
                     <Label className="text-sm font-medium">Style Modifiers</Label>
                     <div className="flex flex-wrap gap-2">
@@ -138,6 +153,9 @@ export default function GraphicGenerator() {
                     <form ref={iterationFormRef} className="space-y-4" action={iterateAction}>
                       <input type="hidden" name="previousImage" value={currentState.image ?? ''} />
                       <input type="hidden" name="prompt" value={currentState.prompt ?? ''} />
+                       {showNegativePrompt && (
+                        <input type="hidden" name="negativePrompt" value={formRef.current?.negativePrompt.value ?? ''} />
+                      )}
                       <div className="space-y-2">
                         <Label htmlFor="feedback" className="text-lg font-semibold font-headline tracking-tight">2. Refine your design</Label>
                         <Textarea

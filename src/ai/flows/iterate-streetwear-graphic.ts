@@ -18,6 +18,10 @@ const IterateStreetwearGraphicInputSchema = z.object({
   previousImage: z.string().describe(
     "The previously generated image as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
   ),
+   negativePrompt: z
+    .string()
+    .optional()
+    .describe('A description of what to avoid in the refined graphic.'),
 });
 export type IterateStreetwearGraphicInput = z.infer<typeof IterateStreetwearGraphicInputSchema>;
 
@@ -41,6 +45,7 @@ const iterateStreetwearGraphicPrompt = ai.definePrompt({
   The initial prompt was: {{{initialPrompt}}}
   The user feedback is: {{{feedback}}}
   Previous Image: {{media url=previousImage}}
+  {{{negativePrompt}}}
 
   Please generate a new image that incorporates the feedback while maintaining the core aesthetic of streetwear design.
   The output refinedImage should be a data URI representing the new image.
@@ -54,11 +59,17 @@ const iterateStreetwearGraphicFlow = ai.defineFlow(
     outputSchema: IterateStreetwearGraphicOutputSchema,
   },
   async input => {
+    
+    let textPrompt = `Refine the image based on this feedback: ${input.feedback}`;
+    if (input.negativePrompt) {
+      textPrompt += ` Do not include the following: ${input.negativePrompt}`;
+    }
+    
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.5-flash-image-preview',
       prompt: [
         {media: {url: input.previousImage}},
-        {text: `Refine the image based on this feedback: ${input.feedback}`},
+        {text: textPrompt},
       ],
       config: {
         responseModalities: ['TEXT', 'IMAGE'],

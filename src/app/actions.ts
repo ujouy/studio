@@ -7,12 +7,14 @@ import { iterateStreetwearGraphic } from '@/ai/flows/iterate-streetwear-graphic'
 
 const generateSchema = z.object({
   prompt: z.string().min(3, { message: 'Prompt must be at least 3 characters long.' }),
+  negativePrompt: z.string().optional(),
 });
 
 const iterateSchema = z.object({
   prompt: z.string(),
   feedback: z.string().min(3, { message: 'Feedback must be at least 3 characters long.' }),
   previousImage: z.string(),
+  negativePrompt: z.string().optional(),
 });
 
 type FormState = {
@@ -24,6 +26,7 @@ type FormState = {
 export async function handleGenerate(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = generateSchema.safeParse({
     prompt: formData.get('prompt'),
+    negativePrompt: formData.get('negativePrompt'),
   });
 
   if (!validatedFields.success) {
@@ -35,7 +38,10 @@ export async function handleGenerate(prevState: FormState, formData: FormData): 
   }
 
   try {
-    const result = await generateStreetwearGraphic({ description: validatedFields.data.prompt });
+    const result = await generateStreetwearGraphic({ 
+      description: validatedFields.data.prompt,
+      negativePrompt: validatedFields.data.negativePrompt,
+     });
     return { image: result.graphicDataUri, error: null, prompt: validatedFields.data.prompt };
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred.';
@@ -52,6 +58,7 @@ export async function handleIterate(prevState: FormState, formData: FormData): P
     prompt: formData.get('prompt'),
     feedback: formData.get('feedback'),
     previousImage: formData.get('previousImage'),
+    negativePrompt: formData.get('negativePrompt'),
   });
 
   const currentImage = formData.get('previousImage') as string | null;
@@ -78,6 +85,7 @@ export async function handleIterate(prevState: FormState, formData: FormData): P
       initialPrompt: validatedFields.data.prompt,
       feedback: validatedFields.data.feedback,
       previousImage: validatedFields.data.previousImage,
+      negativePrompt: validatedFields.data.negativePrompt,
     });
     return { image: result.refinedImage, error: null, prompt: currentPrompt };
   } catch (e) {

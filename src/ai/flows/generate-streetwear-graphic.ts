@@ -16,6 +16,10 @@ const GenerateStreetwearGraphicInputSchema = z.object({
   description: z
     .string()
     .describe('A description of the streetwear graphic to generate.'),
+  negativePrompt: z
+    .string()
+    .optional()
+    .describe('A description of what to avoid in the generated graphic.'),
 });
 export type GenerateStreetwearGraphicInput = z.infer<
   typeof GenerateStreetwearGraphicInputSchema
@@ -55,6 +59,9 @@ const generateStreetwearGraphicFlow = ai.defineFlow(
     const {media} = await ai.generate({
       model: 'googleai/imagen-4.0-fast-generate-001',
       prompt: input.description,
+      config: {
+        negativePrompt: input.negativePrompt,
+      },
     });
     if (!media) {
       throw new Error('No image was generated.');
