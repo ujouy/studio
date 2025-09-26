@@ -11,10 +11,10 @@ const generateSchema = z.object({
 });
 
 const iterateSchema = z.object({
-  prompt: z.string(),
   feedback: z.string().min(3, { message: 'Feedback must be at least 3 characters long.' }),
   previousImage: z.string(),
   negativePrompt: z.string().optional(),
+  prompt: z.string(), // Keep this for form data, but it's not used in the new flow
 });
 
 type FormState = {
@@ -55,10 +55,10 @@ export async function handleGenerate(prevState: FormState, formData: FormData): 
 
 export async function handleIterate(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = iterateSchema.safeParse({
-    prompt: formData.get('prompt'),
     feedback: formData.get('feedback'),
     previousImage: formData.get('previousImage'),
     negativePrompt: formData.get('negativePrompt'),
+    prompt: formData.get('prompt'),
   });
 
   const currentImage = formData.get('previousImage') as string | null;
@@ -82,7 +82,6 @@ export async function handleIterate(prevState: FormState, formData: FormData): P
 
   try {
     const result = await iterateStreetwearGraphic({
-      initialPrompt: validatedFields.data.prompt,
       feedback: validatedFields.data.feedback,
       previousImage: validatedFields.data.previousImage,
       negativePrompt: validatedFields.data.negativePrompt,

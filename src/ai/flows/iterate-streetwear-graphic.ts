@@ -13,7 +13,6 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const IterateStreetwearGraphicInputSchema = z.object({
-  initialPrompt: z.string().describe('The initial prompt used to generate the streetwear graphic.'),
   feedback: z.string().describe('User feedback on the generated graphic.'),
   previousImage: z.string().describe(
     "The previously generated image as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
@@ -36,22 +35,6 @@ export async function iterateStreetwearGraphic(input: IterateStreetwearGraphicIn
   return iterateStreetwearGraphicFlow(input);
 }
 
-const iterateStreetwearGraphicPrompt = ai.definePrompt({
-  name: 'iterateStreetwearGraphicPrompt',
-  input: {schema: IterateStreetwearGraphicInputSchema},
-  output: {schema: IterateStreetwearGraphicOutputSchema},
-  prompt: `You are an AI assistant specializing in streetwear graphic design. Based on the user's feedback and the previously generated image, you will refine the graphic to better meet their needs.
-
-  The initial prompt was: {{{initialPrompt}}}
-  The user feedback is: {{{feedback}}}
-  Previous Image: {{media url=previousImage}}
-  {{{negativePrompt}}}
-
-  Please generate a new image that incorporates the feedback while maintaining the core aesthetic of streetwear design.
-  The output refinedImage should be a data URI representing the new image.
-  `,
-});
-
 const iterateStreetwearGraphicFlow = ai.defineFlow(
   {
     name: 'iterateStreetwearGraphicFlow',
@@ -59,22 +42,42 @@ const iterateStreetwearGraphicFlow = ai.defineFlow(
     outputSchema: IterateStreetwearGraphicOutputSchema,
   },
   async input => {
-    
-    let textPrompt = `Refine the image based on this feedback: ${input.feedback}`;
-    if (input.negativePrompt) {
-      textPrompt += ` Do not include the following: ${input.negativePrompt}`;
+    // Step 1: Use Gemini to describe a new image based on feedback (Describe)
+    const { text: newDescription } = await ai.generate({
+      prompt: `
+        Task: You are a creative assistant for a streetwear brand. Your goal is to create a new, detailed prompt for an image generation model based on user feedback on a previous design.
+
+        Reference Image Guidance: Analyze the provided image for its style, composition, and subject matter.
+        User's Creative Feedback: "${input.feedback}"
+
+        Your task is to synthesize this feedback with the essence of the original image to generate a NEW, stand-alone prompt that will create a refined graphic. The new prompt should be descriptive and detailed enough for a text-to-image model to create a great result. Do not mention the previous image in your output prompt.
+      `,
+      history: [
+        {
+          role: 'user',
+          content: [
+            { media: { url: input.previousImage } },
+          ],
+        },
+      ],
+    });
+
+    if (!newDescription) {
+        throw new Error('Could not generate a new description based on feedback.');
     }
     
+    // Step 2: Use the new description to generate an image with Imagen (Generate)
     const {media} = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-image-preview',
-      prompt: [
-        {media: {url: input.previousImage}},
-        {text: textPrompt},
-      ],
+      model: 'googleai/imagen-4.0-fast-generate-001',
+      prompt: newDescription,
       config: {
-        responseModalities: ['TEXT', 'IMAGE'],
+        negativePrompt: input.negativePrompt,
       },
     });
+
+    if (!media) {
+      throw new Error('No image was generated during the refinement process.');
+    }
 
     return {refinedImage: media.url!};
   }
