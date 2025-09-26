@@ -12,6 +12,7 @@ import ProductPreview from './product-preview';
 import Logo from './logo';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 function SubmitButton({ children, icon: Icon, formAction }: { children: React.ReactNode; icon: React.ElementType; formAction: (formData: FormData) => void; }) {
   const { pending } = useFormStatus();
@@ -28,25 +29,33 @@ function SubmitButton({ children, icon: Icon, formAction }: { children: React.Re
 }
 
 const styleModifiers = [
-  'Vintage Comic',
-  'Minimalist Line Art',
-  'Photorealistic',
-  'Chrome Effect',
-  'Glitch',
-  'Bauhaus',
-  'Psychedelic',
-  'Brutalist',
+    { name: 'Vintage Comic', description: 'Classic comic book art style.' },
+    { name: 'Minimalist Line Art', description: 'Clean, simple lines.' },
+    { name: 'Photorealistic', description: 'Hyper-realistic imagery.' },
+    { name: 'Chrome Effect', description: 'Shiny, metallic surfaces.' },
+    { name: 'Glitch', description: 'Digital distortion effects.' },
+    { name: 'Bauhaus', description: 'Geometric shapes and primary colors.' },
+    { name: 'Psychedelic', description: 'Vibrant, swirling patterns.' },
+    { name: 'Brutalist', description: 'Raw, blocky, and monolithic.' },
 ];
 
 export default function GraphicGenerator() {
   const { toast } = useToast();
   const [prompt, setPrompt] = useState('');
-
+  const [selectedModifiers, setSelectedModifiers] = useState<string[]>([]);
+  
   const handleModifierClick = (modifier: string) => {
-    setPrompt(prev => prev ? `${prev}, ${modifier}` : modifier);
+    setSelectedModifiers(prev =>
+      prev.includes(modifier)
+        ? prev.filter(m => m !== modifier)
+        : [...prev, modifier]
+    );
   };
-
-
+  
+  const getFullPrompt = () => {
+    return [prompt, ...selectedModifiers].filter(Boolean).join(', ');
+  };
+  
   const initialState = { image: null, error: null, prompt: null };
   const [generateState, generateAction, isGenerating] = useActionState(handleGenerate, initialState);
   const [iterateState, iterateAction, isIterating] = useActionState(handleIterate, initialState);
@@ -71,6 +80,7 @@ export default function GraphicGenerator() {
 
   return (
     <div className="grid h-full w-full flex-1 grid-cols-1 lg:grid-cols-[380px_1fr]">
+      <TooltipProvider>
         <div className="flex flex-col border-r bg-sidebar p-4">
             <div className="mb-6 flex items-center gap-2">
               <Logo className="size-8 text-primary" />
@@ -78,12 +88,15 @@ export default function GraphicGenerator() {
             </div>
 
             <div className="flex flex-col gap-6 overflow-y-auto">
-                <form ref={formRef} className="space-y-4">
+                <form ref={formRef} action={(formData) => {
+                    formData.set('prompt', getFullPrompt());
+                    generateAction(formData);
+                }} className="space-y-4">
                   <div className="space-y-3">
                     <Label htmlFor="prompt" className="text-lg font-semibold font-headline tracking-tight">1. Describe your design</Label>
                     <Textarea
                       id="prompt"
-                      name="prompt"
+                      name="prompt-base"
                       placeholder="e.g., A chrome wolf howling at a glitch art moon"
                       rows={4}
                       required
@@ -91,28 +104,38 @@ export default function GraphicGenerator() {
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                     />
+                     <input type="hidden" name="prompt" value={getFullPrompt()} />
                   </div>
                   <div className="space-y-3">
                     <Label className="text-sm font-medium">Style Modifiers</Label>
                     <div className="flex flex-wrap gap-2">
                         {styleModifiers.map(modifier => (
-                            <Badge 
-                                key={modifier} 
-                                variant="secondary" 
-                                className="cursor-pointer hover:bg-primary/20"
-                                onClick={() => handleModifierClick(modifier)}
-                            >
-                                {modifier}
-                            </Badge>
+                          <Tooltip key={modifier.name} delayDuration={100}>
+                            <TooltipTrigger asChild>
+                                <Badge 
+                                    variant={selectedModifiers.includes(modifier.name) ? 'default' : 'secondary'} 
+                                    className="cursor-pointer"
+                                    onClick={() => handleModifierClick(modifier.name)}
+                                >
+                                    {modifier.name}
+                                </Badge>
+                            </TooltipTrigger>
+                             <TooltipContent>
+                               <p>{modifier.description}</p>
+                             </TooltipContent>
+                          </Tooltip>
                         ))}
                     </div>
                   </div>
-                  <SubmitButton icon={Sparkles} formAction={generateAction}>Create</SubmitButton>
+                  <SubmitButton icon={Sparkles} formAction={(formData) => {
+                    formData.set('prompt', getFullPrompt());
+                    generateAction(formData);
+                }}>Create</SubmitButton>
                 </form>
 
               {currentState.image && (
                 <div className="space-y-4 border-t pt-6">
-                    <form ref={iterationFormRef} className="space-y-4">
+                    <form ref={iterationFormRef} className="space-y-4" action={iterateAction}>
                       <input type="hidden" name="previousImage" value={currentState.image ?? ''} />
                       <input type="hidden" name="prompt" value={currentState.prompt ?? ''} />
                       <div className="space-y-2">
@@ -132,6 +155,7 @@ export default function GraphicGenerator() {
               )}
             </div>
         </div>
+      </TooltipProvider>
 
         <div className="flex flex-col bg-background">
             <ProductPreview imageUrl={currentState.image} isLoading={isLoading} />
