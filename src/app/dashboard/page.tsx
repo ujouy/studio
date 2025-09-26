@@ -7,45 +7,46 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
+import { productTypes } from '@/lib/product-types';
 
-// Dummy data for saved designs
+// Dummy data for saved designs, now using productTypes for image consistency
 const savedDesigns = [
     {
-      "id": "saved-design-1",
-      "description": "An abstract graphic with vibrant colors.",
-      "imageUrl": "/mockups/tshirt-white.png",
-      "imageHint": "abstract graphic"
+      id: 'saved-design-1',
+      description: 'An abstract graphic with vibrant colors.',
+      imageUrl: productTypes.find(p => p.id === 'tshirt')?.colors.find(c => c.name === 'White')?.mockupUrl || '',
+      imageHint: 'abstract graphic',
     },
     {
-      "id": "saved-design-2",
-      "description": "A graffiti-style street art design.",
-      "imageUrl": "/mockups/hoodie-white.png",
-      "imageHint": "street art"
+      id: 'saved-design-2',
+      description: 'A graffiti-style street art design.',
+      imageUrl: productTypes.find(p => p.id === 'hoodie')?.colors.find(c => c.name === 'White')?.mockupUrl || '',
+      imageHint: 'street art',
     },
     {
-      "id": "saved-design-3",
-      "description": "A detailed skull design with intricate patterns.",
-      "imageUrl": "/mockups/tshirt-black.png",
-      "imageHint": "skull design"
+      id: 'saved-design-3',
+      description: 'A detailed skull design with intricate patterns.',
+      imageUrl: productTypes.find(p => p.id === 'tshirt')?.colors.find(c => c.name === 'Black')?.mockupUrl || '',
+      imageHint: 'skull design',
     },
     {
-      "id": "saved-design-4",
-      "description": "A futuristic cyberpunk art piece.",
-      "imageUrl": "/mockups/hoodie-black.png",
-      "imageHint": "cyberpunk art"
+      id: 'saved-design-4',
+      description: 'A futuristic cyberpunk art piece.',
+      imageUrl: productTypes.find(p => p.id === 'hoodie')?.colors.find(c => c.name === 'Black')?.mockupUrl || '',
+      imageHint: 'cyberpunk art',
     },
     {
-      "id": "saved-design-5",
-      "description": "A surreal fantasy landscape.",
-      "imageUrl": "/mockups/hat-white.png",
-      "imageHint": "fantasy landscape"
+      id: 'saved-design-5',
+      description: 'A surreal fantasy landscape.',
+      imageUrl: productTypes.find(p => p.id === 'hat')?.colors.find(c => c.name === 'White')?.mockupUrl || '',
+      imageHint: 'fantasy landscape',
     },
     {
-      "id": "saved-design-6",
-      "description": "A classic Japanese wave illustration.",
-      "imageUrl": "/mockups/hat-black.png",
-      "imageHint": "japanese wave"
-    }
+      id: 'saved-design-6',
+      description: 'A classic Japanese wave illustration.',
+      imageUrl: productTypes.find(p => p.id === 'hat')?.colors.find(c => c.name === 'Black')?.mockupUrl || '',
+      imageHint: 'japanese wave',
+    },
   ];
 
 
