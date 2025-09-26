@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { handleGenerate, handleIterate } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -39,8 +39,8 @@ export default function GraphicGenerator() {
   const { toast } = useToast();
 
   const initialState = { image: null, error: null, prompt: null };
-  const [generateState, generateAction] = useFormState(handleGenerate, initialState);
-  const [iterateState, iterateAction] = useFormState(handleIterate, initialState);
+  const [generateState, generateAction] = useActionState(handleGenerate, initialState);
+  const [iterateState, iterateAction] = useActionState(handleIterate, initialState);
 
   const formRef = useRef<HTMLFormElement>(null);
   const iterationFormRef = useRef<HTMLFormElement>(null);
