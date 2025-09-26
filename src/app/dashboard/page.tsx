@@ -13,37 +13,37 @@ const savedDesigns = [
     {
       "id": "saved-design-1",
       "description": "An abstract graphic with vibrant colors.",
-      "imageUrl": "/mockups/gallery/abstract.png",
+      "imageUrl": "/mockups/tshirt-white.png",
       "imageHint": "abstract graphic"
     },
     {
       "id": "saved-design-2",
       "description": "A graffiti-style street art design.",
-      "imageUrl": "/mockups/gallery/street.png",
+      "imageUrl": "/mockups/hoodie-white.png",
       "imageHint": "street art"
     },
     {
       "id": "saved-design-3",
       "description": "A detailed skull design with intricate patterns.",
-      "imageUrl": "/mockups/gallery/skull.png",
+      "imageUrl": "/mockups/tshirt-black.png",
       "imageHint": "skull design"
     },
     {
       "id": "saved-design-4",
       "description": "A futuristic cyberpunk art piece.",
-      "imageUrl": "/mockups/gallery/cyberpunk.png",
+      "imageUrl": "/mockups/hoodie-black.png",
       "imageHint": "cyberpunk art"
     },
     {
       "id": "saved-design-5",
       "description": "A surreal fantasy landscape.",
-      "imageUrl": "/mockups/gallery/fantasy.png",
+      "imageUrl": "/mockups/hat-white.png",
       "imageHint": "fantasy landscape"
     },
     {
       "id": "saved-design-6",
       "description": "A classic Japanese wave illustration.",
-      "imageUrl": "/mockups/gallery/wave.png",
+      "imageUrl": "/mockups/hat-black.png",
       "imageHint": "japanese wave"
     }
   ];
