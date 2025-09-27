@@ -43,24 +43,12 @@ const iterateStreetwearGraphicFlow = ai.defineFlow(
   },
   async input => {
     // Step 1: Use Gemini to describe a new image based on feedback (Describe)
-    const { text: newDescription } = await ai.generate({
-      prompt: `
-        Task: You are a creative assistant for a streetwear brand. Your goal is to create a new, detailed prompt for an image generation model based on user feedback on a previous design.
-
-        Reference Image Guidance: Analyze the provided image for its style, composition, and subject matter.
-        User's Creative Feedback: "${input.feedback}"
-
-        Your task is to synthesize this feedback with the essence of the original image to generate a NEW, stand-alone prompt that will create a refined graphic. The new prompt should be descriptive and detailed enough for a text-to-image model to create a great result. Do not mention the previous image in your output prompt.
-      `,
-      history: [
-        {
-          role: 'user',
-          content: [
-            { media: { url: input.previousImage } },
-          ],
-        },
-      ],
-    });
+    const { text: newDescription } = await ai.generate([
+      {
+        text: `Task: You are a creative assistant for a streetwear brand. Your goal is to create a new, detailed prompt for an image generation model based on user feedback on a previous design.\n\nReference Image Guidance: Analyze the provided image for its style, composition, and subject matter.\nUser's Creative Feedback: "${input.feedback}"\n\nYour task is to synthesize this feedback with the essence of the original image to generate a NEW, stand-alone prompt that will create a refined graphic. The new prompt should be descriptive and detailed enough for a text-to-image model to create a great result. Do not mention the previous image in your output prompt.`
+      },
+      { media: { url: input.previousImage } }
+    ]);
 
     if (!newDescription) {
         throw new Error('Could not generate a new description based on feedback.');
