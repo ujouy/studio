@@ -1,0 +1,21 @@
+{
+  "name": "realesrgan-server",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "download": "node scripts/download-realesrgan.js",
+    "install-bin": "npm run download",
+    "download:win": "node scripts/download-realesrgan.js",
+    "doctor": "node scripts/doctor.js",
+    "smoke-test": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.19.2",
+    "nextn": "file:../..",
+    "sharp": "^0.34.4",
+    "unzipper": "^0.10.14"
+  }
+}

@@ -1,0 +1,8 @@
+Real-ESRGAN stub server listening on port 9070
+[info] Running Real-ESRGAN {
+  BIN: "C:\\Users\\Aidan J. D'Onofrio\\dev\\studio\\tools\\realesrgan-server\\bin\\realesrgan-ncnn-vulkan.exe",
+  MODEL: 'realesrgan-x4plus',
+  esrScale: 4,
+  GPU_ID: 'auto',
+  TILE_SIZE: '0'
+}
